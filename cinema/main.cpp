@@ -1,10 +1,10 @@
 #include <iostream>
-#include <controller.h>
+#include "controller.h"
 
 using namespace std;
 
 int main(){
     Controller c;
-    c.commandLine();;
+    c.commandLine();
     return 0;
 }

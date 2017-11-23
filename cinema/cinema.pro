@@ -6,9 +6,9 @@ CONFIG -= qt
 SOURCES += main.cpp
 
 HEADERS += \
-    split.h \
-    passageiro.h \
     registro.h \
-    vagao.h \
-    trem.h \
+    cliente.h \
+    sala.h \
+    cinema.h \
+    split.h \
     controller.h
