@@ -4,23 +4,23 @@
 #include <vector>
 #include <sstream>
 #include "cliente.h"
-#include "sala.h"
+#include "secao.h"
 
 using namespace std;
 
 class Cinema{
 public:
-    vector<Sala> salas;
+    vector<Secao> secoes;
 
     Cinema(){
 
     }
 
-   string searchSecao(string hora){
+   string search(string search){
         stringstream ss;
         ss << "";
-        for(auto elem: salas){
-            ss << elem.searchSecao(hora);
+        for(auto elem: secoes){
+            ss << elem.search(search);
         }
         if(ss.str() == ""){
             return "erro | nenhuma seção encontrada";
@@ -29,26 +29,14 @@ public:
         }
     }
 
-   string searchFilme(string search){
-       string temp;
-       stringstream ss;
-       for(auto elem: salas){
-           temp = elem.filme;
-           if(temp.find(search)){//erro
-               ss << elem.toString();
-           }
-       }
-       return ss.str();
-   }
-
-    void addSala(Sala sala){
-        salas.push_back(sala);
+    void addSala(Secao secao){
+        secoes.push_back(secao);
     }
 
-    void comprar(Cliente *cli, int idSala){
-        for(auto &elem: salas){
-            if(elem.id == idSala){
-                if(elem.comprar(cli)){
+    void vender(Cliente *cli, int idSecao){
+        for(auto &elem: secoes){
+            if(elem.id == idSecao){
+                if(elem.vender(cli)){
                     return;
                 }
                 throw string("erro | sala lotada");
@@ -59,9 +47,9 @@ public:
 
     void finalizarSecao(int salaId){
         int i;
-        for(auto &elem: salas){
+        for(auto &elem: secoes){
             if(elem.id == salaId){
-                salas.erase(salas.begin() + i);
+                secoes.erase(secoes.begin() + i);
                 return;
             }
             i++;
@@ -69,25 +57,24 @@ public:
         throw string ("erro | seção não encontrada");
     }
 
-/*    string search(string cpf){
+    string showSecao(int idS){
         stringstream ss;
-        int i = 0;
-        for(auto elem: salas){
-            string temp = elem.search(cpf);
-            if(temp != "404"){
-                ss << "### Sala " << i << " ###" << endl;
-                ss << temp;
-                return ss.str();
+        ss << "";
+        for(auto elem: secoes){
+            if(elem.id == idS){
+                ss << elem.toString2();
             }
-            i++;
         }
-        return "erro | passageiro não embarcado";
-    }*/
+        if(ss.str() == ""){
+            throw string("erro | secão não encontrada");
+        }
+        return ss.str();
+    }
 
     string toString(){
         stringstream ss;
         ss << "";
-        for(auto &elem: salas){
+        for(auto elem: secoes){
             ss << elem.toString();
         }
         if(ss.str() == ""){

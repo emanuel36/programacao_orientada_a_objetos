@@ -8,7 +8,7 @@ SOURCES += main.cpp
 HEADERS += \
     registro.h \
     cliente.h \
-    sala.h \
     cinema.h \
     split.h \
-    controller.h
+    controller.h \
+    secao.h

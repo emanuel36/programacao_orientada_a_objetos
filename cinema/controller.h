@@ -22,11 +22,11 @@ public:
                    "  getCadastro                                \n"
                    "  cadastrar _cpf                           \n\n"
                    "  # Comandos - Cinema                        \n"
-                   "  addSala _filme _hora                       \n"
+                   "  addSecao _filme _hora                       \n"
                    "  finalizar _sala                            \n"
-                   "  comprar _cpf _sala                         \n"
-                   "  searchFilme _filme                         \n"
-                   "  searchSecao _hora                        \n\n"
+                   "  vender _cpf _sala                         \n"
+                   "  search _filme                         \n"
+                   "  search _hora                        \n\n"
                    "  # default                                  \n"
                    "  fim                                        \n"
                    "  help                                       \n";
@@ -48,11 +48,11 @@ public:
             return registro.getCadastro();
         }
 
-        else if(cmd == "addSala"){
+        else if(cmd == "addSecao"){
             if(ui.size() != 3){
                 return "erro | comando inválido!";
             }
-            cinema.addSala(Sala(ui[1], ui[2]));
+            cinema.addSala(Secao(ui[1], ui[2]));
             return "done";
         }
 
@@ -64,27 +64,27 @@ public:
             return "done";
         }
 
-        else if(cmd == "searchSecao"){
+        else if(cmd == "showSecao"){
             if(ui.size() != 2){
                 return "erro | comando inválido!";
             }
-            return cinema.searchSecao(ui[1]);
+            return cinema.showSecao(stoi(ui[1]));
         }
 
-        else if(cmd == "searchFilme"){
+        else if(cmd == "search"){
             if(ui.size() != 2){
                 return "erro | comando inválido!";
             }
-            return cinema.searchFilme(ui[1]);
+            return cinema.search(ui[1]);
         }
 
-        else if(cmd == "comprar"){
+        else if(cmd == "vender"){
             if(ui.size() != 3){
                 return "erro | comando inválido!";
             }
             Cliente* cli = registro.search(ui[1]);
             if(cli != nullptr){
-                cinema.comprar(cli, stoi(ui[2]));
+                cinema.vender(cli, stoi(ui[2]));
                 return "done";
             }
             throw string("erro | cliente não cadastrado");
