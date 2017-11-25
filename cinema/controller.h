@@ -22,7 +22,11 @@ public:
                    "  getCadastro                                \n"
                    "  cadastrar _cpf                           \n\n"
                    "  # Comandos - Cinema                        \n"
-                   "  addSessao _filme _hora                       \n"
+                   "  addFilme _nome _duração(min) _3d?                        \n"
+                   "  showFilmes                        \n"
+                   "  addSala                        \n"
+                   "  showSala                        \n"
+                   "  addSessao _filme _hora _sala        \n"
                    "  finalizar _sessao                           \n"
                    "  vender _cpf _sessao                         \n"
                    "  showSessao _sessao                            \n"
@@ -57,11 +61,19 @@ public:
             return "done";
         }
 
+        else if(cmd == "addFilme"){
+            if(ui.size() != 4){
+                return "erro | comando inválido!";
+            }
+            cinema.addFilme(Filme(ui[1], stoi(ui[2]), stoi(ui[3])));
+            return "done";
+        }
+
         else if(cmd == "addSessao"){
             if(ui.size() != 4){
                 return "erro | comando inválido!";
             }
-            cinema.addSessao(Sessao(ui[1], ui[2]), stoi(ui[3]));
+            cinema.addSessao(ui[1], Sessao(ui[2]), stoi(ui[3]));
             return "done";
         }
 
@@ -78,6 +90,13 @@ public:
                 return "erro | comando inválido!";
             }
             return cinema.showSessao(stoi(ui[1]));
+        }
+
+        else if(cmd == "showFilmes"){
+            if(ui.size() != 1){
+                return "erro | comando inválido!";
+            }
+            return cinema.showFilmes();
         }
 
         else if(cmd == "showSalas"){

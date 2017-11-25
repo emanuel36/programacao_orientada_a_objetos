@@ -13,6 +13,7 @@ class Cinema{
 public:
     vector<Sessao> sessoes;
     vector<Sala> salas;
+    vector<Filme> filmes;
 
     Cinema(){
 
@@ -31,12 +32,18 @@ public:
         }
     }
 
-    void addSessao(Sessao sessao, int id){
+    void addSessao(string filme, Sessao sessao, int idS){
         for(auto &elem: salas){
-            if(id == elem.id){
+            if(idS == elem.id){
                 sessao.sala = &elem;
-                sessoes.push_back(sessao);
-                return;
+                for(auto &elem: filmes){
+                    if(elem.nome == filme){
+                        sessao.filme = &elem;
+                        sessoes.push_back(sessao);
+                        return;
+                    }
+                }
+                throw string ("erro | filme não encontrado");
             }
         }
         throw string ("erro | sala não encontrada");
@@ -44,6 +51,10 @@ public:
 
     void addSala(Sala sala){
         salas.push_back(sala);
+    }
+
+    void addFilme(Filme filme){
+        filmes.push_back(filme);
     }
 
     void vender(Cliente *cli, int idSessao){
@@ -78,6 +89,23 @@ public:
         }
         if(ss.str() == ""){
             throw string ("erro | nenhuma sala cadastrada");
+        }
+        return ss.str();
+    }
+
+    string showFilmes(){
+        stringstream ss;
+        ss << "";
+        for(auto elem: filmes){
+            ss << "Filme: " << elem.nome << endl;
+            ss << "Duração: " << elem.duracao << " minutos" << endl;
+            ss << "3D: ";
+            if(elem.td) ss << "Sim";
+            else ss << "Não";
+            ss << endl;
+        }
+        if(ss.str() == ""){
+            throw string ("erro | nenhum filme cadastrado");
         }
         return ss.str();
     }

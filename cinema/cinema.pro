@@ -12,4 +12,5 @@ HEADERS += \
     split.h \
     controller.h \
     sala.h \
-    sessao.h
+    sessao.h \
+    filme.h

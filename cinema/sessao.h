@@ -5,6 +5,7 @@
 #include <sstream>
 #include "cliente.h"
 #include "sala.h"
+#include "filme.h"
 
 using namespace std;
 
@@ -12,19 +13,18 @@ int idSessao = 0;
 class Sessao{
 public:
     Sala* sala;
-    string filme;
+    Filme* filme;
     string hora;
     int id;
 
-    Sessao(string filme = "", string hora = ""){
-        this->filme = filme;
+    Sessao(string hora = ""){
         this->hora = hora;
         this->id = idSessao++;
     }
 
     string search(string search){
         string temp = "";
-        if(this->hora == search || this->filme == search){
+        if(this->hora == search || this->filme->nome == search){
             temp = this->toString();
             return temp;
         }
@@ -53,7 +53,7 @@ public:
         int i = 0;
         ss << endl << "### Seção " << id << " ###" << endl;
         ss << "Sala: " << sala->id << endl;
-        ss << "Filme: " << filme << endl;
+        ss << "Filme: " << filme->nome << endl;
         ss << "Hora: " << hora << endl;
         for(auto elem: sala->cadeiras){
             if(elem == nullptr){
@@ -68,7 +68,7 @@ public:
         stringstream ss;
         ss << endl << "### Seção " << id << " ###" << endl;
         ss << "Sala: " << sala->id << endl;
-        ss << "Filme: " << filme << endl;
+        ss << "Filme: " << filme->nome << endl;
         ss << "Hora: " << hora << endl;
         for(auto elem: sala->cadeiras){
             if(elem != nullptr){

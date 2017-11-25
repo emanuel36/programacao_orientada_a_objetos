@@ -2,6 +2,7 @@
 #define SALA_H
 
 #include <vector>
+#include <sstream>
 #include "sessao.h"
 
 using namespace std;
