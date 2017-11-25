@@ -14,12 +14,19 @@ class Sessao{
 public:
     Sala* sala;
     Filme* filme;
+    vector<Cliente*> cadeiras;
     string hora;
     int id;
 
     Sessao(string hora = ""){
         this->hora = hora;
         this->id = idSessao++;
+    }
+
+    void initCadeiras(){
+        for(int i = 0; i < sala->capacidade; i++){
+            cadeiras.push_back(nullptr);
+        }
     }
 
     string search(string search){
@@ -32,7 +39,7 @@ public:
     }
 
     bool vender(Cliente* cli){
-        for(auto elem: sala->cadeiras){
+        for(auto elem: cadeiras){
             if(elem != nullptr){
                 if(elem->cpf == cli->cpf){
                     throw string("erro | cliente já comprou");
@@ -40,8 +47,8 @@ public:
             }
         }
         for(int i = 0; i < sala->capacidade; i++){
-            if(sala->cadeiras[i] == nullptr){
-                sala->cadeiras[i] = cli;
+            if(cadeiras[i] == nullptr){
+                cadeiras[i] = cli;
                 return true;
             }
         }
@@ -55,7 +62,7 @@ public:
         ss << "Sala: " << sala->id << endl;
         ss << "Filme: " << filme->nome << endl;
         ss << "Hora: " << hora << endl;
-        for(auto elem: sala->cadeiras){
+        for(auto elem: cadeiras){
             if(elem == nullptr){
                 i++;
             }
@@ -70,7 +77,7 @@ public:
         ss << "Sala: " << sala->id << endl;
         ss << "Filme: " << filme->nome << endl;
         ss << "Hora: " << hora << endl;
-        for(auto elem: sala->cadeiras){
+        for(auto elem: cadeiras){
             if(elem != nullptr){
                 ss << "[" << elem->cpf << "]" << endl;
             }

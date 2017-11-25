@@ -11,15 +11,18 @@ int idSala = 0;
 
 struct Sala{
     int capacidade;
-    vector<Cliente*> cadeiras;
     int id;
+    bool td;
 
-    Sala(int capacidade = 3){
+    Sala(int capacidade = 3 , int td = 0){
         this->capacidade = capacidade;
         this->id = idSala++;
 
-        for(int i = 0; i < capacidade; i++){
-            cadeiras.push_back(nullptr);
+        if(td){
+            this->td = true;
+        }
+        else{
+            this->td = false;
         }
     }
 };

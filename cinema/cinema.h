@@ -6,14 +6,14 @@
 #include "cliente.h"
 #include "sessao.h"
 #include "sala.h"
-
+#include <list>
 using namespace std;
 
 class Cinema{
 public:
-    vector<Sessao> sessoes;
-    vector<Sala> salas;
-    vector<Filme> filmes;
+    list<Sessao> sessoes;
+    list<Sala> salas;
+    list<Filme> filmes;
 
     Cinema(){
 
@@ -26,7 +26,7 @@ public:
             ss << elem.search(search);
         }
         if(ss.str() == ""){
-            return "erro | nenhuma seção encontrada";
+            return "erro | nenhuma sessão encontrada";
         }else{
             return ss.str();
         }
@@ -36,11 +36,15 @@ public:
         for(auto &elem: salas){
             if(idS == elem.id){
                 sessao.sala = &elem;
-                for(auto &elem: filmes){
-                    if(elem.nome == filme){
-                        sessao.filme = &elem;
-                        sessoes.push_back(sessao);
-                        return;
+                sessao.initCadeiras();
+                for(auto &eleme: filmes){
+                    if(eleme.nome == filme){
+                        if(elem.td == eleme.td){
+                            sessao.filme = &eleme;
+                            sessoes.push_back(sessao);
+                            return;
+                        }
+                        else throw string("erro | sala incompativel");
                     }
                 }
                 throw string ("erro | filme não encontrado");
@@ -63,22 +67,23 @@ public:
                 if(elem.vender(cli)){
                     return;
                 }
-                throw string("erro | secao lotada");
+                throw string("erro | sessão lotada");
             }
         }
-        throw string("erro | secao não localizada");
+        throw string("erro | sessão não localizada");
     }
 
     void finalizarSessao(int sessaoId){
-        int i;
+
+         auto it1 = sessoes.begin();
         for(auto &elem: sessoes){
             if(elem.id == sessaoId){
-                sessoes.erase(sessoes.begin() + i);
+                sessoes.erase(it1);
                 return;
             }
-            i++;
+            advance(it1, 1);
         }
-        throw string ("erro | seção não encontrada");
+        throw string ("erro | sessão não encontrada");
     }
 
     string showSalas(){
@@ -86,6 +91,12 @@ public:
         ss << "";
         for(auto elem: salas){
             ss << "[Sala " << elem.id << "]: " << elem.capacidade << endl;
+            if(elem.td){
+                ss << "Sala 3D";
+            }else{
+                ss << "Sala 2D";
+            }
+            ss << endl;
         }
         if(ss.str() == ""){
             throw string ("erro | nenhuma sala cadastrada");
@@ -119,7 +130,7 @@ public:
             }
         }
         if(ss.str() == ""){
-            throw string("erro | secão não encontrada");
+            throw string("erro | sessão não encontrada");
         }
         return ss.str();
     }
@@ -131,7 +142,7 @@ public:
             ss << elem.toString();
         }
         if(ss.str() == ""){
-            throw string ("erro | nenhuma secao cadatrada");
+            throw string ("erro | nenhuma sessão cadatrada");
         }
         return ss.str();
     }

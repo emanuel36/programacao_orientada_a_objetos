@@ -21,17 +21,20 @@ public:
             return "  # Comandos - Cadastro                      \n"
                    "  getCadastro                                \n"
                    "  cadastrar _cpf                           \n\n"
+
                    "  # Comandos - Cinema                        \n"
-                   "  addFilme _nome _duração(min) _3d?                        \n"
-                   "  showFilmes                        \n"
-                   "  addSala                        \n"
-                   "  showSala                        \n"
-                   "  addSessao _filme _hora _sala        \n"
-                   "  finalizar _sessao                           \n"
-                   "  vender _cpf _sessao                         \n"
-                   "  showSessao _sessao                            \n"
-                   "  search _filme                         \n"
-                   "  search _hora                              \n\n"
+                   "  addSala  _capacidade _3d?                  \n"
+                   "  addFilme _nome _duração(min) _3d?          \n"
+                   "  addSessao _filme _hora _sala               \n"
+                   "  showSessoes                                \n"
+                   "  showFilmes                                 \n"
+                   "  showSalas                                  \n"
+                   "  vender _cpf _sessao                        \n"
+                   "  search _filme                              \n"
+                   "  search _hora                               \n"
+                   "  finalizar _sessao                        \n\n"
+
+                   "  showSessao _sessao                         \n"
                    "  # default                                  \n"
                    "  fim                                        \n"
                    "  help                                       \n";
@@ -54,10 +57,10 @@ public:
         }
 
         else if(cmd == "addSala"){
-            if(ui.size() != 1){
+            if(ui.size() != 3){
                 return "erro | comando inválido!";
             }
-            cinema.addSala(Sala());
+            cinema.addSala(Sala(stoi(ui[1]), stoi(ui[2])));
             return "done";
         }
 
@@ -125,7 +128,7 @@ public:
             throw string("erro | cliente não cadastrado");
         }
 
-        else if(cmd == "show"){
+        else if(cmd == "showSessoes"){
             if(ui.size() != 1){
                 return "erro | comando inválido!";
             }
