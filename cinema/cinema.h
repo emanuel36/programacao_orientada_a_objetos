@@ -4,13 +4,15 @@
 #include <vector>
 #include <sstream>
 #include "cliente.h"
-#include "secao.h"
+#include "sessao.h"
+#include "sala.h"
 
 using namespace std;
 
 class Cinema{
 public:
-    vector<Secao> secoes;
+    vector<Sessao> sessoes;
+    vector<Sala> salas;
 
     Cinema(){
 
@@ -19,7 +21,7 @@ public:
    string search(string search){
         stringstream ss;
         ss << "";
-        for(auto elem: secoes){
+        for(auto elem: sessoes){
             ss << elem.search(search);
         }
         if(ss.str() == ""){
@@ -29,27 +31,38 @@ public:
         }
     }
 
-    void addSala(Secao secao){
-        secoes.push_back(secao);
+    void addSessao(Sessao sessao, int id){
+        for(auto &elem: salas){
+            if(id == elem.id){
+                sessao.sala = &elem;
+                sessoes.push_back(sessao);
+                return;
+            }
+        }
+        throw string ("erro | sala não encontrada");
     }
 
-    void vender(Cliente *cli, int idSecao){
-        for(auto &elem: secoes){
-            if(elem.id == idSecao){
+    void addSala(Sala sala){
+        salas.push_back(sala);
+    }
+
+    void vender(Cliente *cli, int idSessao){
+        for(auto &elem: sessoes){
+            if(elem.id == idSessao){
                 if(elem.vender(cli)){
                     return;
                 }
-                throw string("erro | sala lotada");
+                throw string("erro | secao lotada");
             }
         }
-        throw string("erro | sala não localizada");
+        throw string("erro | secao não localizada");
     }
 
-    void finalizarSecao(int salaId){
+    void finalizarSessao(int sessaoId){
         int i;
-        for(auto &elem: secoes){
-            if(elem.id == salaId){
-                secoes.erase(secoes.begin() + i);
+        for(auto &elem: sessoes){
+            if(elem.id == sessaoId){
+                sessoes.erase(sessoes.begin() + i);
                 return;
             }
             i++;
@@ -57,10 +70,22 @@ public:
         throw string ("erro | seção não encontrada");
     }
 
-    string showSecao(int idS){
+    string showSalas(){
         stringstream ss;
         ss << "";
-        for(auto elem: secoes){
+        for(auto elem: salas){
+            ss << "[Sala " << elem.id << "]: " << elem.capacidade << endl;
+        }
+        if(ss.str() == ""){
+            throw string ("erro | nenhuma sala cadastrada");
+        }
+        return ss.str();
+    }
+
+    string showSessao(int idS){
+        stringstream ss;
+        ss << "";
+        for(auto elem: sessoes){
             if(elem.id == idS){
                 ss << elem.toString2();
             }
@@ -74,11 +99,11 @@ public:
     string toString(){
         stringstream ss;
         ss << "";
-        for(auto elem: secoes){
+        for(auto elem: sessoes){
             ss << elem.toString();
         }
         if(ss.str() == ""){
-            throw string ("erro | nenhuma sala cadatrada");
+            throw string ("erro | nenhuma secao cadatrada");
         }
         return ss.str();
     }

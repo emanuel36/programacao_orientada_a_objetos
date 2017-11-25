@@ -1,50 +1,47 @@
-#ifndef SECAO_H
-#define SECAO_H
+#ifndef SESSAO_H
+#define SESSAO_H
 
 #include <vector>
 #include <sstream>
 #include "cliente.h"
+#include "sala.h"
 
 using namespace std;
 
-int i = 0;
-class Secao{
+int idSessao = 0;
+class Sessao{
 public:
+    Sala* sala;
     string filme;
     string hora;
     int id;
-    vector<Cliente*> cadeiras;
-    int capacidade = 3;
 
-    Secao(string filme = "", string hora = ""){
+    Sessao(string filme = "", string hora = ""){
         this->filme = filme;
         this->hora = hora;
-        this->id = i++;
-
-        for(int i = 0; i < capacidade; i++){
-            cadeiras.push_back(nullptr);
-        }
+        this->id = idSessao++;
     }
 
     string search(string search){
-        string temp;
+        string temp = "";
         if(this->hora == search || this->filme == search){
             temp = this->toString();
             return temp;
         }
+        return temp;
     }
 
     bool vender(Cliente* cli){
-        for(auto elem: cadeiras){
+        for(auto elem: sala->cadeiras){
             if(elem != nullptr){
                 if(elem->cpf == cli->cpf){
                     throw string("erro | cliente já comprou");
                 }
             }
         }
-        for(int i = 0; i < capacidade; i++){
-            if(cadeiras[i] == nullptr){
-                cadeiras[i] = cli;
+        for(int i = 0; i < sala->capacidade; i++){
+            if(sala->cadeiras[i] == nullptr){
+                sala->cadeiras[i] = cli;
                 return true;
             }
         }
@@ -55,9 +52,10 @@ public:
         stringstream ss;
         int i = 0;
         ss << endl << "### Seção " << id << " ###" << endl;
+        ss << "Sala: " << sala->id << endl;
         ss << "Filme: " << filme << endl;
-        ss << "Seção: " << hora << endl;
-        for(auto elem: cadeiras){
+        ss << "Hora: " << hora << endl;
+        for(auto elem: sala->cadeiras){
             if(elem == nullptr){
                 i++;
             }
@@ -69,9 +67,10 @@ public:
     string toString2(){
         stringstream ss;
         ss << endl << "### Seção " << id << " ###" << endl;
+        ss << "Sala: " << sala->id << endl;
         ss << "Filme: " << filme << endl;
-        ss << "Seção: " << hora << endl;
-        for(auto elem: cadeiras){
+        ss << "Hora: " << hora << endl;
+        for(auto elem: sala->cadeiras){
             if(elem != nullptr){
                 ss << "[" << elem->cpf << "]" << endl;
             }
@@ -80,4 +79,4 @@ public:
     }
 };
 
-#endif // SECAO_H
+#endif // SESSAO_H

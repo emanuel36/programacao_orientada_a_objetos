@@ -22,11 +22,12 @@ public:
                    "  getCadastro                                \n"
                    "  cadastrar _cpf                           \n\n"
                    "  # Comandos - Cinema                        \n"
-                   "  addSecao _filme _hora                       \n"
-                   "  finalizar _sala                            \n"
-                   "  vender _cpf _sala                         \n"
+                   "  addSessao _filme _hora                       \n"
+                   "  finalizar _sessao                           \n"
+                   "  vender _cpf _sessao                         \n"
+                   "  showSessao _sessao                            \n"
                    "  search _filme                         \n"
-                   "  search _hora                        \n\n"
+                   "  search _hora                              \n\n"
                    "  # default                                  \n"
                    "  fim                                        \n"
                    "  help                                       \n";
@@ -48,11 +49,19 @@ public:
             return registro.getCadastro();
         }
 
-        else if(cmd == "addSecao"){
-            if(ui.size() != 3){
+        else if(cmd == "addSala"){
+            if(ui.size() != 1){
                 return "erro | comando inválido!";
             }
-            cinema.addSala(Secao(ui[1], ui[2]));
+            cinema.addSala(Sala());
+            return "done";
+        }
+
+        else if(cmd == "addSessao"){
+            if(ui.size() != 4){
+                return "erro | comando inválido!";
+            }
+            cinema.addSessao(Sessao(ui[1], ui[2]), stoi(ui[3]));
             return "done";
         }
 
@@ -60,15 +69,22 @@ public:
             if(ui.size() != 2){
                 return "erro | comando inválido!";
             }
-            cinema.finalizarSecao(stoi(ui[1]));
+            cinema.finalizarSessao(stoi(ui[1]));
             return "done";
         }
 
-        else if(cmd == "showSecao"){
+        else if(cmd == "showSessao"){
             if(ui.size() != 2){
                 return "erro | comando inválido!";
             }
-            return cinema.showSecao(stoi(ui[1]));
+            return cinema.showSessao(stoi(ui[1]));
+        }
+
+        else if(cmd == "showSalas"){
+            if(ui.size() != 1){
+                return "erro | comando inválido!";
+            }
+            return cinema.showSalas();
         }
 
         else if(cmd == "search"){
